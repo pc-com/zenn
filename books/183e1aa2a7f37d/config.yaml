@@ -1,9 +1,13 @@
-title: ""
+title: "git/GitHubの使い方"
 summary: ""
-topics: []
+topics: ["git","github","vcs"]
 published: false
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
-  - example1
-  - example2
+  - 1.why_use_vcs
+  - 2.create_local_repo
+  - 3.staging_and_commit
+  - 4.push_and_pull_fetch
+  - 5.
+
