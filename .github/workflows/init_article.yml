@@ -1,0 +1,34 @@
+name: init_article
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        type: string
+        required: true
+        description: '記事のタイトル'
+      branch_name:
+        type: string
+        required: false
+        description: 'ブランチ名'
+
+jobs:
+  init_article:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TITLE: ${{ github.event.inputs.title }}
+      BRANCH_NAME: ${{ github.event.inputs.branch_name }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+      - run: npm install -g zenn-cli
+      - name: new article
+        run: |
+          git checkout -b $BRANCH_NAME || exit 1
+          npx zenn new:article --title $TITLE
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "new article"
+          git push origin $BRANCH_NAME
+      - run: gh pr create -d -t $TITLE -b "" -B "main" 
