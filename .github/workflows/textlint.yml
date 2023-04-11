@@ -1,0 +1,27 @@
+name: textlint
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  textlint:
+    runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          cache: npm
+      - run: npm ci
+      - name: textlint
+        run: |
+          git fetch origin main
+          git diff origin/main HEAD --name-only |grep \.md$ |xargs npx textlint >> .textlint.log & exit 0
+      - name: excute textlint
+        if: always()
+        run: gh pr comment ${{ github.event.pull_request.number }} -F .textlint.log --repo ${{ github.repository }}
