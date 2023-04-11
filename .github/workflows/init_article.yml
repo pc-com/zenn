@@ -31,4 +31,4 @@ jobs:
           git add .
           git commit -m "new article"
           git push origin $BRANCH_NAME
-      - run: gh pr create -d -t $TITLE -b "" -B "main" --assignee "@me"
+      - run: gh pr create -d -t $TITLE -b "" -B "main" --assignee $GITHUB_ACTOR
