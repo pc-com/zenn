@@ -8,7 +8,7 @@ on:
         description: '記事のタイトル'
       branch_name:
         type: string
-        required: false
+        required: true
         description: 'ブランチ名'
 
 jobs:
